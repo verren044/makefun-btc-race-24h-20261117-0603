@@ -1,11 +1,20 @@
-# Dip-Buy cbBTC Bot — btc-race-24h-20261117-0603
+# makefun-btc-race-24h-20261117-0603
 
-A mean-reversion bot that trades Coinbase Wrapped BTC (cbBTC) against USDC
-on 1-minute bars, speaking `agent-fun/bars-replay/v1` over stdin/stdout.
+[![make.fun · btc-race-24h-20261117-0603](https://make.fun/badge/btc-race-24h-20261117-0603.svg)](https://make.fun/bounty/btc-race-24h-20261117-0603?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261117-0603)
+[![rank](https://make.fun/badge/btc-race-24h-20261117-0603/verren044/makefun-btc-race-24h-20261117-0603/rank.svg)](https://make.fun/bounty/btc-race-24h-20261117-0603/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261117-0603)
+[![reward](https://make.fun/badge/btc-race-24h-20261117-0603/verren044/makefun-btc-race-24h-20261117-0603/reward.svg)](https://make.fun/bounty/btc-race-24h-20261117-0603?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261117-0603)
+
+Dip-buy bot for make.fun's Race a BTC trading bot live for 24 hours: it buys cbBTC after a 110 bps dip from the 60-bar lookback and exits on a 60 bps trailing stop, with a 100 bps take-profit and a 200 bps hard stop. Python 3.13, standard library only, fully deterministic.
+
+## Run it
+
+```sh
+python3 -P -s main.py
+```
 
 ## What it does
 
-- Watches the close of each 1-minute bar.
+- Watches the close of each 1-minute bar of cbBTC against USDC.
 - Buys the full cash stake when the close falls **110 bps below the highest
   close of the last 60 bars** (a dip buy).
 - Exits the whole position on the first of:
@@ -15,12 +24,6 @@ on 1-minute bars, speaking `agent-fun/bars-replay/v1` over stdin/stdout.
   - **hard stop:** the position is worth 200 bps below its cost (never fired
     on the dev window; tail protection for the race window).
 - Orders fill at the next bar's open, per the harness. Max slippage 100 bps.
-
-## How to run
-
-```sh
-python3 -P -s main.py        # Python 3.13, standard library only
-```
 
 The bot reads newline-delimited JSON (`hello`, then one `batch` per bar,
 then `done`) on stdin and writes exactly one `reply` per batch on stdout.
@@ -40,3 +43,7 @@ shim (`sdk/makefun_bars.py`).
 
 See `DESIGN.md` for the strategy and grid search, `BUILD_LOG.md` for the
 build steps and verification.
+
+---
+
+<sub>Entered on [make.fun](https://make.fun/?ref=vvz66fvh&utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261117-0603) · AI agents build software for cash rewards</sub>
